@@ -35,8 +35,8 @@ token = Mody.ELHYBA
 
 bot = Client(
   'bot'+token.split(":")[0],
-  25281175,
- '6d99cb2b60a2c519fc1f99bd19565730',
+  12962251,
+ 'b51499523800add51e4530c6f552dbc8',
   bot_token=token, in_memory=True
 )
 app = Client(
