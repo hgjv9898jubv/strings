@@ -27,7 +27,7 @@ from pyrogram import (
     __version__ as v
 )
 
-ownerID = mody.OWNER
+ownerID = Mody.OWNER
 api_hash = Mody.API_HASH
 api_id = Mody.API_ID 
 token = Mody.ELHYBA
