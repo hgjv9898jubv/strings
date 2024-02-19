@@ -1,0 +1,37 @@
+{
+	"name": "ZE STRING SESSION",
+	"description": "تنصيب بوتات استخراج جلسات مقدم من سورس زد إي,
+	"logo": "https://telegra.ph/file/5116db79f852db113875c.jpg",
+	"keywords": [
+		"telegram",
+		"bot",
+		"python",
+		"telethon"
+	],
+    "env": {
+        "ELHYBA": {
+            "description": "توكن البوت",
+            "value": ""
+        },
+        "API_HASH": {
+            "description": "الايبي هاش",
+            "value": ""
+        },
+        "API_ID": {
+            "description": "الايبي ايدي",
+            "value": ""
+        },
+        "OWNER": {
+            "description": "ايدي المطور",
+            "value": ""
+	   }
+	},
+	"buildpacks": [
+		{
+			"url": "heroku/python"
+		}
+	]
+}
+
+
+
