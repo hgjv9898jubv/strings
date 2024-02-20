@@ -50,7 +50,7 @@ app = Client(
     bot_token=token, in_memory=True
 )
 ##########################
-IQ = InlineKeyboardMarkup(
+IQS = InlineKeyboardMarkup(
     [
         [
             InlineKeyboardButton("𝗗𝗲𝘃𝗲𝗹𝗼𝗽𝗲𝗿", url=f"https://t.me/IQ7amo")
@@ -60,6 +60,17 @@ IQ = InlineKeyboardMarkup(
     ]
 )
 ######################
+
+IQ = InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(
+                            text="sᴀᴠᴇᴅ ᴍᴇssᴀɢᴇs",
+                            url=f"tg://openmessage?user_id={user_id}",
+                        )
+                    ]
+                ]
+            )
 ##################
 
 def add_new_user(user_id):
@@ -325,7 +336,7 @@ async def generator_and_about(app, m, user_id: int):
         text += f"**\n\n🧑🏻‍💻🖤 گەشەپێدەری بۆت :  [﮼محمد](t.me/MGIMT)**"
         text += f"**\n\n⧉• کەناڵی سەرچاوە : @MGIMT**"
         photo=f"https://telegra.ph/file/11448420ddc987f97d1de.jpg"
-        await app.send_photo(m.chat.id, photo, text, reply_markup=IQ)
+        await app.send_photo(m.chat.id, photo, text, reply_markup=IQS)
 
     if m.text == "𝗣𝘆𝗿𝗼𝗴𝗿𝗮𝗺 𝗩𝟮":
         rep = await m.reply(
@@ -385,16 +396,9 @@ async def generator_and_about(app, m, user_id: int):
         await c.disconnect()
         await app.send_message(
             chat_id=user_id,
-            text,
-            reply_markup=InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton(
-                            text="ئێرە دابگرە بۆ کۆدەکە",
-                            url=f"tg://openmessage?user_id={user_id}"),
-        ]
-    ]
-)
+            text="**✅┋ بە سەرکەوتوویی ئەنجام درا\n**👤┋ ناوت : {get.first_name}\n**🆔┋ ئایدیت :** `{get.id}`\n**📞┋ ژمارەی مۆبایل :** `{phone}`\n**🔒┋ کۆدەکە لە 𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 دانرا**",
+            reply_markup=IQ
+        )
 
     if m.text == "𝗧𝗲𝗹𝗲𝘁𝗵𝗼𝗻":
         rep = await m.reply(
@@ -447,16 +451,9 @@ async def generator_and_about(app, m, user_id: int):
 
         await app.send_message(
             chat_id=user_id,
-            text,
-            reply_markup=InlineKeyboardMarkup(
-              [
-                    [
-                        InlineKeyboardButton(
-                            text="ئێرە دابگرە بۆ کۆدەکە",
-                            url=f"tg://openmessage?user_id={user_id}"),
-        ]
-    ]
-)
+            text="**✅┋ بە سەرکەوتوویی ئەنجام درا\n**👤┋ ناوت : {get.first_name}\n**🆔┋ ئایدیت :** `{get.id}`\n**📞┋ ژمارەی مۆبایل :** `{phone}`\n**🔒┋ کۆدەکە لە 𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 دانرا**",
+            reply_markup=IQ
+        )
 
 
 app.start()
