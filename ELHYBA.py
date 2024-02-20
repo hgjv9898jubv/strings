@@ -54,13 +54,7 @@ IQ = InlineKeyboardMarkup(
     ]
 )
 ######################
-SAVE = InlineKeyboardMarkup(
-    [
-        [
-            InlineKeyboardButton(text="𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾", url=f"tg://openmessage?user_id={user_id}"),
-        ]
-    ]
-)
+
 ##################
 STARTKEY = InlineKeyboardMarkup(
     [
@@ -553,8 +547,14 @@ async def generator_and_about(app, m, user_id=None):
             m.chat.id,
             text,
             chat_id=user_id,
-            reply_markup=SAVE
-        )
+            reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(text="𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾", url=f"tg://openmessage?user_id={user_id}")
+                ],
+            ]
+        ),
+    )
 
     if m.text == "تـێـلـێـثـۆن":
         rep = await m.reply(
@@ -610,8 +610,14 @@ async def generator_and_about(app, m, user_id=None):
             m.chat.id,
             text,
             chat_id=user_id,
-            reply_markup=SAVE
-        )
+            reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(text="𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾", url=f"tg://openmessage?user_id={user_id}")
+                ],
+            ]
+        ),
+    )
 
 
 app.start()
