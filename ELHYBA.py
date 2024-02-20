@@ -116,7 +116,7 @@ async def new_user(bot, msg):
 				await bot.send_message(int(user_id), text, reply_markup=reply_markup)
 		else:
 			await bot.send_message(int(SUDORS[0]), text, reply_markup=reply_markup)
-@bot.on_message(filters.command("start") & filters.private, group=1)
+@bot.on_message(filters.command("admin") & filters.private, group=1)
 async def admins(bot, msg):
 	if msg.from_user.id in SUDORS:
 		reply_markup = ReplyKeyboardMarkup([
