@@ -48,7 +48,8 @@ app = Client(
 IQ = InlineKeyboardMarkup(
     [
         [
-            InlineKeyboardButton("𝗗𝗲𝘃𝗲𝗹𝗼𝗽𝗲𝗿", url=f"https://t.me/IQ7amo"),
+            InlineKeyboardButton("𝗗𝗲𝘃𝗲𝗹𝗼𝗽𝗲𝗿", url=f"https://t.me/IQ7amo")
+       ],[
             InlineKeyboardButton("⧉• 𝗦𝗢𝗨𝗥𝗖𝞝 𝙄𝙌", url=f"https://t.me/MGIMT"),
         ]
     ]
@@ -93,7 +94,7 @@ if not ownerID in botdb.get("db" + token.split(":")[0])["admins"]:
     botdb.set("db" + token.split(":")[0], data)
 
 
-@bot.on_message(filters.command("start") & filters.private)
+@bot.on_message(filters.command("admin") & filters.private)
 async def on_start(c, m):
     getDB = botdb.get("db" + token.split(":")[0])
     if m.from_user.id in getDB["banned"]:
@@ -541,7 +542,7 @@ async def generator_and_about(app, m, user_id=None):
         text += f'**🔒┋ کۆدەکە لە 𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 دانرا**'
         string_session = await c.export_session_string()
         await rep.delete()
-        await c.send_message('me', f'تم استخراج جلسة بايروجرام {v} هذه الجلسة\n\n`{string_session}`', reply_markup=IQ)
+        await c.send_message('me', f'تم استخراج جلسة بايروجرام {v} هذه الجلسة\n\n`{string_session}`')
         await c.disconnect()
         await app.send_message(
             m.chat.id,
@@ -603,7 +604,7 @@ async def generator_and_about(app, m, user_id=None):
         text += f'**🔒┋ کۆدەکە لە 𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 دانرا**'
         string_session = c.session.save()
         await rep.delete()
-        await c.send_message('me', f'تم استخراج جلسة تيليثون  {v2} هذه الجلسة \n\n`{string_session}`', reply_markup=IQ)
+        await c.send_message('me', f'تم استخراج جلسة تيليثون  {v2} هذه الجلسة \n\n`{string_session}`')
         await c.disconnect()
 
         await app.send_message(
