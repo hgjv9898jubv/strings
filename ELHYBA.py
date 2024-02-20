@@ -60,7 +60,15 @@ IQS = InlineKeyboardMarkup(
     ]
 )
 ######################
-
+IQ = InlineKeyboardMarkup(
+    [
+        [
+            InlineKeyboardButton("𝗗𝗲𝘃𝗲𝗹𝗼𝗽𝗲𝗿", url=f"https://t.me/IQ7amo")
+       ],[
+            InlineKeyboardButton("کۆدەکە لە 𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 دانراوە", url=f"https://t.me/hj"),
+        ]
+    ]
+)
 ##################
 
 def add_new_user(user_id):
@@ -385,18 +393,10 @@ async def generator_and_about(app, m, user_id: int):
         await c.send_message('me', f'**بە سەرکەوتوویی کۆدی پـایـرۆگـرام دەرهێنرا** `{v}` **ئەمە کۆدەکەیە**\n\n`{string_session}`')
         await c.disconnect()
         await app.send_message(
-            chat_id=user_id,
-            text="**✅┋ بە سەرکەوتوویی ئەنجام درا\n**👤┋ ناوت : {get.first_name}\n**🆔┋ ئایدیت :** `{get.id}`\n**📞┋ ژمارەی مۆبایل :** `{phone}`\n**🔒┋ کۆدەکە لە 𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 دانرا**",
-            reply_markup=InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton(
-                            text="sᴀᴠᴇᴅ ᴍᴇssᴀɢᴇs",
-                            url=f"tg://openmessage?user_id={user_id}"),
-                            ]
-                        ]
-                    )
-              )
+            m.chat.id,
+            text,
+            reply_markup=IQ
+        )
 
     if m.text == "𝗧𝗲𝗹𝗲𝘁𝗵𝗼𝗻":
         rep = await m.reply(
@@ -448,18 +448,10 @@ async def generator_and_about(app, m, user_id: int):
         await c.disconnect()
 
         await app.send_message(
-            chat_id=user_id,
-            text="**✅┋ بە سەرکەوتوویی ئەنجام درا\n**👤┋ ناوت : {get.first_name}\n**🆔┋ ئایدیت :** `{get.id}`\n**📞┋ ژمارەی مۆبایل :** `{phone}`\n**🔒┋ کۆدەکە لە 𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 دانرا**",
-            reply_markup=InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton(
-                            text="sᴀᴠᴇᴅ ᴍᴇssᴀɢᴇs",
-                            url=f"tg://openmessage?user_id={user_id}"),
-                            ]
-                        ]
-                    )
-                )
+            m.chat.id,
+            text,
+            reply_markup=IQ
+	)
 
 app.start()
 bot.start()
