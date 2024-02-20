@@ -467,14 +467,14 @@ async def start_msg(app, message):
         ],
         resize_keyboard=True, placeholder='استخراج جلسات'
     )
-    await message.reply('''**
+    await app.send_photo('''**
 - مرحـبـًا عـزيـزي 🙋 {},
 في بوت استخـراج جلسات 
 - لبـدء استخـراج الجلسة اختـر الجلسـة بالاسفل.
 - إذا كنـت تريـد أن يكون حسـابك في أمـان تام فاختر بايروجـرام أمـا إذا كـان رقمك حقيقـي فاختر تيليثون .
  - ملاحظـة :
 - احـذر مشاركـة الكود لأحـد لأنه يستطيـع اختراق حسـابك ⚠️ .
-**'''.format(message.from_user.mention), reply_markup=reply_markup, quote=True)
+**'''.format(message.from_user.mention), photo=f"https://telegra.ph/file/11448420ddc987f97d1de.jpg", reply_markup=reply_markup, quote=True)
 
 
 @app.on_message(filters.text & filters.private)
@@ -484,7 +484,7 @@ async def generator_and_about(app, m):
         text += "**🐍 زمانی پڕۆگرامینگ - پایثۆن**"
         text += f"**\n🔥 ڤێرژنی پایرۆگرام** {v}"
         text += f"**\n🌱 ڤێرژنی تێلیثۆن** {v2}"
-        text += f"**\n\n🧑🏻‍💻🖤 گەشەپێدەری بۆت : [﮼محمد](t.me/MGIMT)**"
+        text += f"**\n\n🧑🏻‍💻🖤 گەشەپێدەری بۆت :  [﮼محمد](t.me/MGIMT)**"
         text += f"**\n\n⧉• کەناڵی سەرچاوە : @MGIMT**"
         photo=f"https://telegra.ph/file/11448420ddc987f97d1de.jpg"
         await app.send_photo(m.chat.id, photo, text, reply_markup=IQ)
