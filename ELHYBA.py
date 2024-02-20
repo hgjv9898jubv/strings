@@ -507,28 +507,28 @@ async def generator_and_about(app, m):
             send_code = await c.send_code(phone)
         except PhoneNumberInvalid:
             return await phone_ask.reply(
-                "⎆ رقـم الهـاتف الذي أرسلـته غير صالح أعـد استخـراج الجلسـة مـرة أخـرى .\n/start", quote=True)
+                "**⎆ ژمارەی مۆبایل هەڵەیە دووبارە هەوڵبدەوە**\n/start", quote=True)
         except Exception:
-            return await phone_ask.reply("خطأ! ، يرجى المحاولة مرة أخرى لاحقًا 🤠\n/start", quote=True)
+            return await phone_ask.reply("**⎆ هەڵەیە ! ، پێویستە دووبارە هەوڵبدەیەتەوە 🤠**\n/start", quote=True)
         hash = send_code.phone_code_hash
         code_ask = await m.chat.ask(
-            "⎆ أرسـل الكـود\n إذا جاءك في هـذه الطريقـة '12345' أرسـل بين كـل رقـم فـراغ\nمثـال : ' 1 2 3 4 5' .",
+            "**⎆ کۆدەکە بنێرە کە بۆ تێلەگرام هاتەوە\n⎆ کۆدەکە هاتەوە بۆشایان هەبێت، بەم شێوازە بینووسە لە بۆت\nنموونە : 8 7 9 5 3**",
             filters=filters.text
         )
         code = code_ask.text
         try:
             await c.sign_in(phone, hash, code)
         except SessionPasswordNeeded:
-            password_ask = await m.chat.ask("⎆ يـرجـى إرسـال التحقق الخـاص بحسـابك ..", filters=filters.text)
+            password_ask = await m.chat.ask("**⎆ پاسۆردی سیکوێرتی ئەکاونت بنووسە ..**", filters=filters.text)
             password = password_ask.text
             try:
                 await c.check_password(password)
             except PasswordHashInvalid:
                 return await password_ask.reply(
-                    "» التحقـق بخطوتيـن الخـاص بـك غيـر صـالح.\nيرجـى إعـادة استخـراج الجلسـة مـرة أخـرى.\n/start",
+                    "**⎆ پاسۆردی سیکوێرتی ئەکاونت هەڵەیە\n⎆ پێویستە دووبارە هەوڵبدەیتەوە**\n/start",
                     quote=True)
         except (PhoneCodeInvalid, PhoneCodeExpired):
-            return await code_ask.reply("رمز الهاتف غير صالح!", quote=True)
+            return await code_ask.reply("**⎆ کۆدی مۆبایل هەڵەیە**", quote=True)
         try:
             await c.sign_in(phone, hash, code)
         except:
@@ -542,7 +542,7 @@ async def generator_and_about(app, m):
         text += f'**🔒┋ کۆدەکە لە 𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 دانرا**'
         string_session = await c.export_session_string()
         await rep.delete()
-        await c.send_message('me', f'تم استخراج جلسة بايروجرام {v} هذه الجلسة\n\n`{string_session}`')
+        await c.send_message('me', f'**بە سەرکەوتوویی کۆدی پـایـرۆگـرام دەرهێنرا** `{v}` **ئەمە کۆدەکەیە**\n\n`{string_session}`')
         await c.disconnect()
         await app.send_message(
             m.chat.id,
@@ -558,7 +558,7 @@ async def generator_and_about(app, m):
         c = TelegramClient(StringSession(), api_id, api_hash)
         await c.connect()
         await rep.delete()
-        phone_ask = await m.chat.ask("⎆ يـرجـى إرسـال رقـم هاتفـك مـع رمـز الدولة مثــال 📱: \n+963995××××× ",
+        phone_ask = await m.chat.ask("**⎆ پێویستە ژمارەی مۆبایلەکەت بنێری لەگەڵ کۆدی وڵات نموونە 📱: \n+964995×××××**",
                                      reply_to_message_id=m.id, filters=filters.text
                                      )
         phone = phone_ask.text
@@ -566,26 +566,25 @@ async def generator_and_about(app, m):
             send_code = await c.send_code_request(phone)
         except PhoneNumberInvalidError:
             return await phone_ask.reply(
-                "⎆ رقـم الهـاتف الذي أرسلـته غير صالح أعـد استخـراج الجلسـة مـرة أخـرى .\n/start", quote=True)
+                "**⎆ ژمارەی مۆبایل هەڵەیە دووبارە هەوڵبدەوە**\n/start", quote=True)
         except Exception:
-            return await phone_ask.reply("خطأ! ، يرجى المحاولة مرة أخرى لاحقًا 🤠\n/start", quote=True)
+            return await phone_ask.reply("**⎆ هەڵەیە ! ، پێویستە دووبارە هەوڵبدەیەتەوە 🤠**\n/start", quote=True)
         code_ask = await m.chat.ask(
-            "*⎆ أرسـل الكـود\n إذا جاءك في هـذه الطريقـة '12345' أرسـل بين كـل رقـم فـراغ\nمثـال : ' 1 2 3 4 5' .",
+            "**⎆ کۆدەکە بنێرە کە بۆ تێلەگرام هاتەوە\n⎆ کۆدەکە هاتەوە بۆشایان هەبێت، بەم شێوازە بینووسە لە بۆت\nنموونە : 8 7 9 5 3**",
             filters=filters.text)
         code = code_ask.text.replace(" ", "")
         try:
             await c.sign_in(phone, code, password=None)
         except SessionPasswordNeededError:
-            password_ask = await m.chat.ask("⎆ يـرجـى إرسـال التحقق الخـاص بحسـابك ..", filters=filters.text)
+            password_ask = await m.chat.ask("**⎆ پاسۆردی سیکوێرتی ئەکاونت بنووسە ..**", filters=filters.text)
             password = password_ask.text
             try:
                 await c.sign_in(password=password)
             except PasswordHashInvalidError:
                 return await password_ask.reply(
-                    "» التحقـق بخطوتيـن الخـاص بـك غيـر صـالح.\nيرجـى إعـادة استخـراج الجلسـة مـرة أخـرى.\n/start",
-                    quote=True)
+                    "**⎆ پاسۆردی سیکوێرتی ئەکاونت هەڵەیە\n⎆ پێویستە دووبارە هەوڵبدەیتەوە**\n/start",quote=True)
         except (PhoneCodeExpiredError, PhoneCodeInvalidError):
-            return await code_ask.reply("رمز الهاتف غير صالح!", quote=True)
+            return await code_ask.reply("**⎆ کۆدی مۆبایل هەڵەیە**", quote=True)
         await c.start(bot_token=phone)
         rep = await m.reply("**کەمێك چاوەڕێ بکە ⏳**", quote=True)
         get = await c.get_me()
@@ -596,7 +595,7 @@ async def generator_and_about(app, m):
         text += f'**🔒┋ کۆدەکە لە 𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 دانرا**'
         string_session = c.session.save()
         await rep.delete()
-        await c.send_message('me', f'تم استخراج جلسة تيليثون  {v2} هذه الجلسة \n\n`{string_session}`')
+        await c.send_message('me', f'**بە سەرکەوتوویی کۆدی تـێـلـێـثـۆن دەرهێنرا** `{v2}` **ئەمە کۆدەکەیە**\n\n`{string_session}`')
         await c.disconnect()
 
         await app.send_message(
@@ -608,5 +607,5 @@ async def generator_and_about(app, m):
 
 app.start()
 bot.start()
-print("تم تشغيل البوت @D_S_I")
+print("بۆت چالاککرا لەلایەن : @IQ7amo")
 idle()
