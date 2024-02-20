@@ -302,19 +302,17 @@ async def start_msg(app, message):
     reply_markup = ReplyKeyboardMarkup(
         [
             [
-                KeyboardButton("پـایـرۆگـرام"), KeyboardButton("تـێـلـێـثـۆن")
+                KeyboardButton("𝗣𝘆𝗿𝗼𝗴𝗿𝗮𝗺 𝗩𝟮"), KeyboardButton("𝗧𝗲𝗹𝗲𝘁𝗵𝗼𝗻")
             ],
             [KeyboardButton("دەرباری بۆت")]
         ],
         resize_keyboard=True, placeholder='دەرهێنانی کۆد 🧑🏻‍💻'
     )
     await message.reply('''**
-- مرحـبـًا عـزيـزي 🙋 {},
-في بوت استخـراج جلسات 
-- لبـدء استخـراج الجلسة اختـر الجلسـة بالاسفل.
-- إذا كنـت تريـد أن يكون حسـابك في أمـان تام فاختر بايروجـرام أمـا إذا كـان رقمك حقيقـي فاختر تيليثون .
- - ملاحظـة :
-- احـذر مشاركـة الكود لأحـد لأنه يستطيـع اختراق حسـابك ⚠️ .
+🧑🏻‍💻︙بە خێربێی ئەزیزم {}
+🧑🏻‍💻︙بۆ بۆتی دەرهێنانی کۆدی تێلەگرام
+🧑🏻‍💻︙ئەم بۆتە تایبەتە بۆ پرۆگرامینگ و هەندێك بۆت
+🧑🏻‍💻︙دوو جۆر هەیە پایرۆگرام و تێلێثۆن لە دووگمەی خوارەوە
 **'''.format(message.from_user.mention), reply_markup=reply_markup, quote=True)
 
 @app.on_message(filters.text & filters.private)
@@ -329,7 +327,7 @@ async def generator_and_about(app, m):
         photo=f"https://telegra.ph/file/11448420ddc987f97d1de.jpg"
         await app.send_photo(m.chat.id, photo, text, reply_markup=IQ)
 
-    if m.text == "پـایـرۆگـرام":
+    if m.text == "𝗣𝘆𝗿𝗼𝗴𝗿𝗮𝗺 𝗩𝟮":
         rep = await m.reply(
             "**کەمێك چاوەڕێ بکە ⏳**", reply_markup=ReplyKeyboardRemove()
             , quote=True)
@@ -383,7 +381,7 @@ async def generator_and_about(app, m):
         text += f'**🔒┋ کۆدەکە لە 𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 دانرا**'
         string_session = await c.export_session_string()
         await rep.delete()
-        await c.send_message('me', f'**بە سەرکەوتوویی کۆدی پـایـرۆگـرام دەرهێنرا** `{v}` **ئەمە کۆدەکەیە**\n\n`{string_session}`')
+        await c.send_message(m.chat.id, f'**بە سەرکەوتوویی کۆدی پـایـرۆگـرام دەرهێنرا** `{v}` **ئەمە کۆدەکەیە**\n\n`{string_session}`')
         await c.disconnect()
         await app.send_message(
             m.chat.id,
@@ -391,7 +389,7 @@ async def generator_and_about(app, m):
             reply_markup=IQ
         )
 
-    if m.text == "تـێـلـێـثـۆن":
+    if m.text == "𝗧𝗲𝗹𝗲𝘁𝗵𝗼𝗻":
         rep = await m.reply(
             "**کەمێك چاوەڕێ بکە ⏳**",
             reply_markup=ReplyKeyboardRemove()
@@ -437,7 +435,7 @@ async def generator_and_about(app, m):
         text += f'**🔒┋ کۆدەکە لە 𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 دانرا**'
         string_session = c.session.save()
         await rep.delete()
-        await c.send_message('me', f'**بە سەرکەوتوویی کۆدی تـێـلـێـثـۆن دەرهێنرا** `{v2}` **ئەمە کۆدەکەیە**\n\n`{string_session}`')
+        await c.send_message(m.chat.id, f'**بە سەرکەوتوویی کۆدی تـێـلـێـثـۆن دەرهێنرا** `{v2}` **ئەمە کۆدەکەیە**\n\n`{string_session}`')
         await c.disconnect()
 
         await app.send_message(
