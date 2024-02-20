@@ -13,7 +13,7 @@ from pyrogram.errors.exceptions.bad_request_400 import PasswordHashInvalid
 from pyrogram.errors.exceptions.not_acceptable_406 import PhoneNumberInvalid
 from pyrogram.errors.exceptions.bad_request_400 import PhoneCodeInvalid
 from pyrogram.errors import PeerIdInvalid
-from config import bot, bot_id, db, SUDORS
+from config import db, SUDORS
 import asyncio, os
 #############################################################################
 from telethon import TelegramClient
@@ -35,6 +35,8 @@ ownerID = Mody.OWNER
 api_hash = Mody.API_HASH
 api_id = Mody.API_ID
 token = Mody.ELHYBA
+
+bot_id = token.split(":")[0]
 
 bot = Client(
     'bot' + token.split(":")[0],
