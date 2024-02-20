@@ -15,3 +15,5 @@ gTTS
 Kvsqlite
 pyrogram
 pyromod
+TgCrypto
+asBASE
