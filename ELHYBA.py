@@ -547,7 +547,7 @@ async def generator_and_about(app, m, user_id: int):
         await app.send_message(
             m.chat.id,
             text,
-            chat_id=user_id,
+            user_id,
             reply_markup=InlineKeyboardMarkup(
             [
                 [
@@ -610,7 +610,7 @@ async def generator_and_about(app, m, user_id: int):
         await app.send_message(
             m.chat.id,
             text,
-            chat_id=user_id,
+            user_id,
             reply_markup=InlineKeyboardMarkup(
             [
                 [
