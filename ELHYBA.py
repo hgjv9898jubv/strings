@@ -316,7 +316,7 @@ async def start_msg(app, message):
 **'''.format(message.from_user.mention), reply_markup=reply_markup, quote=True)
 
 @app.on_message(filters.text & filters.private)
-async def generator_and_about(app, m):
+async def generator_and_about(app, m, user_id: int):
     if m.text == "دەرباری بۆت":
         text = ''
         text += "**🐍 زمانی پڕۆگرامینگ - پایثۆن**"
@@ -381,13 +381,25 @@ async def generator_and_about(app, m):
         text += f'**🔒┋ کۆدەکە لە 𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 دانرا**'
         string_session = await c.export_session_string()
         await rep.delete()
-        await c.send_message(m.chat.id, f'**بە سەرکەوتوویی کۆدی پـایـرۆگـرام دەرهێنرا** `{v}` **ئەمە کۆدەکەیە**\n\n`{string_session}`')
+        await c.send_message('m', f'**بە سەرکەوتوویی کۆدی پـایـرۆگـرام دەرهێنرا** `{v}` **ئەمە کۆدەکەیە**\n\n`{string_session}`')
         await c.disconnect()
         await app.send_message(
-            m.chat.id,
+            chat_id=user_id,
             text,
-            reply_markup=IQ
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(
+                            text="ئێرە دابگرە بۆ کۆدەکە",
+                            url=f"tg://openmessage?user_id={user_id}",
+                        )
+                    ]
+                ]
+            ),
+            disable_web_page_preview=True,
         )
+    except:
+        pass
 
     if m.text == "𝗧𝗲𝗹𝗲𝘁𝗵𝗼𝗻":
         rep = await m.reply(
@@ -433,17 +445,28 @@ async def generator_and_about(app, m):
         text += f'**🆔┋ ئایدیت :** `{get.id}`\n'
         text += f'**📞┋ ژمارەی مۆبایل :** `{phone}`\n'
         text += f'**🔒┋ کۆدەکە لە 𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 دانرا**'
-        string_session = c.session()
+        string_session = c.session.save()
         await rep.delete()
-        await c.send_message(m.chat.id, f'**بە سەرکەوتوویی کۆدی تـێـلـێـثـۆن دەرهێنرا** `{v2}` **ئەمە کۆدەکەیە**\n\n`{string_session}`')
+        await c.send_message('m', f'**بە سەرکەوتوویی کۆدی تـێـلـێـثـۆن دەرهێنرا** `{v2}` **ئەمە کۆدەکەیە**\n\n`{string_session}`')
         await c.disconnect()
 
         await app.send_message(
-            m.chat.id,
+            chat_id=user_id,
             text,
-            reply_markup=IQ
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(
+                            text="ئێرە دابگرە بۆ کۆدەکە",
+                            url=f"tg://openmessage?user_id={user_id}",
+                        )
+                    ]
+                ]
+            ),
+            disable_web_page_preview=True,
         )
-          
+    except:
+        pass
 
 
 app.start()
