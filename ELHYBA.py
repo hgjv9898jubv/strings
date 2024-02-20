@@ -478,7 +478,7 @@ async def start_msg(app, message):
 
 
 @app.on_message(filters.text & filters.private)
-async def generator_and_about(app, m, user_id: int):
+async def generator_and_about(app, m):
     if m.text == "زانیاری دەرباری بۆت":
         text = ''
         text += "**🐍 زمانی پڕۆگرامینگ - پایثۆن**"
@@ -546,16 +546,8 @@ async def generator_and_about(app, m, user_id: int):
         await c.disconnect()
         await app.send_message(
             m.chat.id,
-            text,
-            user_id,
-            reply_markup=InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton(text="𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾", url=f"tg://openmessage?user_id={user_id}")
-                ],
-            ]
-        ),
-    )
+            text
+        )
 
     if m.text == "تـێـلـێـثـۆن":
         rep = await m.reply(
@@ -609,16 +601,9 @@ async def generator_and_about(app, m, user_id: int):
 
         await app.send_message(
             m.chat.id,
-            text,
-            user_id,
-            reply_markup=InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton(text="𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾", url=f"tg://openmessage?user_id={user_id}")
-                ],
-            ]
-        ),
-    )
+            text
+        )
+          
 
 
 app.start()
