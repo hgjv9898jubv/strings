@@ -463,9 +463,9 @@ async def start_msg(app, message):
             [
                 KeyboardButton("پـایـرۆگـرام"), KeyboardButton("تـێـلـێـثـۆن")
             ],
-            [KeyboardButton("زانیاری دەرباری بۆت")]
+            [KeyboardButton("دەرباری بۆت")]
         ],
-        resize_keyboard=True, placeholder='استخراج جلسات'
+        resize_keyboard=True, placeholder='دەرکردنی کۆد'
     )
     await app.send_photo('''**
 - مرحـبـًا عـزيـزي 🙋 {},
@@ -474,12 +474,12 @@ async def start_msg(app, message):
 - إذا كنـت تريـد أن يكون حسـابك في أمـان تام فاختر بايروجـرام أمـا إذا كـان رقمك حقيقـي فاختر تيليثون .
  - ملاحظـة :
 - احـذر مشاركـة الكود لأحـد لأنه يستطيـع اختراق حسـابك ⚠️ .
-**'''.format(message.from_user.mention), m.chat.id, photo=f"https://telegra.ph/file/11448420ddc987f97d1de.jpg", reply_markup=reply_markup, quote=True)
+**'''.format(message.from_user.mention), message.chat.id, photo=f"https://telegra.ph/file/11448420ddc987f97d1de.jpg", reply_markup=reply_markup)
 
 
 @app.on_message(filters.text & filters.private)
 async def generator_and_about(app, m):
-    if m.text == "زانیاری دەرباری بۆت":
+    if m.text == "دەرباری بۆت":
         text = ''
         text += "**🐍 زمانی پڕۆگرامینگ - پایثۆن**"
         text += f"**\n🔥 ڤێرژنی پایرۆگرام** {v}"
