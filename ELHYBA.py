@@ -55,15 +55,6 @@ IQ = InlineKeyboardMarkup(
     ]
 )
 ######################
-buttons = ReplyKeyboardMarkup(
-        [
-            [
-                KeyboardButton("پـایـرۆگـرام"), KeyboardButton("تـێـلـێـثـۆن")
-            ],
-            [KeyboardButton("دەرباری بۆت")]
-        ],
-        resize_keyboard=True, placeholder='دەرکردنی کۆد'
-    )
 ##################
 STARTKEY = InlineKeyboardMarkup(
     [
@@ -464,25 +455,26 @@ async def must_join_channel(app: Client, msg: Message):
         print(f"**بۆت بکە ئەدمین لە کەناڵی**: {MUST_JOIN} !")
 #############################################################################
 
-START = """**
+####################################################
+@app.on_message(filters.command("start") & filters.private)
+async def start_msg(app, message):
+    reply_markup = ReplyKeyboardMarkup(
+        [
+            [
+                KeyboardButton("پـایـرۆگـرام"), KeyboardButton("تـێـلـێـثـۆن")
+            ],
+            [KeyboardButton("دەرباری بۆت")]
+        ],
+        resize_keyboard=True, placeholder='دەرکردنی کۆد'
+    )
+    await message.reply('''**
 - مرحـبـًا عـزيـزي 🙋 {},
 في بوت استخـراج جلسات 
 - لبـدء استخـراج الجلسة اختـر الجلسـة بالاسفل.
 - إذا كنـت تريـد أن يكون حسـابك في أمـان تام فاختر بايروجـرام أمـا إذا كـان رقمك حقيقـي فاختر تيليثون .
  - ملاحظـة :
 - احـذر مشاركـة الكود لأحـد لأنه يستطيـع اختراق حسـابك ⚠️ .
-**"""
-#############
-START_IMG=f"https://telegra.ph/file/11448420ddc987f97d1de.jpg"
-####################################################
-@app.on_message(filters.command("start") & filters.private)
-async def start(app, msg):
-	user = await app.get_me()
-	mention = user.mention
-	await msg.reply_photo(START_IMG,
-		caption=START.format(msg.from_user.mention, mention),
-		reply_markup=InlineKeyboardMarkup(buttons)
-	)
+**'''.format(message.from_user.mention), reply_markup=reply_markup, quote=True)
 
 @app.on_message(filters.text & filters.private)
 async def generator_and_about(app, m):
@@ -498,7 +490,7 @@ async def generator_and_about(app, m):
 
     if m.text == "پـایـرۆگـرام":
         rep = await m.reply(
-            "**⏳ يـعالـج..**", reply_markup=ReplyKeyboardRemove()
+            "**کەمێك چاوەڕێ بکە ⏳**", reply_markup=ReplyKeyboardRemove()
             , quote=True)
         c = Client(
             f"pyro{m.from_user.id}", api_id, api_hash,
@@ -507,7 +499,7 @@ async def generator_and_about(app, m):
         await c.connect()
         await rep.delete()
         phone_ask = await m.chat.ask(
-            "⎆ يـرجـى إرسـال رقـم هاتفـك مـع رمـز الدولة مثــال 📱: \n+963995×××××",
+            "**⎆ پێویستە ژمارەی مۆبایلەکەت بنێری لەگەڵ کۆدی وڵات نموونە 📱: \n+964995×××××**",
             reply_to_message_id=m.id, filters=filters.text
         )
         phone = phone_ask.text
@@ -541,7 +533,7 @@ async def generator_and_about(app, m):
             await c.sign_in(phone, hash, code)
         except:
             pass
-        rep = await m.reply("**⏳ يـعـالـج ..**", quote=True)
+        rep = await m.reply("**کەمێك چاوەڕێ بکە ⏳**", quote=True)
         get = await c.get_me()
         text = '**✅┋ بە سەرکەوتوویی ئەنجام درا\n**'
         text += f'**👤┋ ناوت : {get.first_name}\n**'
@@ -559,7 +551,7 @@ async def generator_and_about(app, m):
 
     if m.text == "تـێـلـێـثـۆن":
         rep = await m.reply(
-            "**⏳ يـعـالـج..**",
+            "**کەمێك چاوەڕێ بکە ⏳**",
             reply_markup=ReplyKeyboardRemove()
             , quote=True
         )
@@ -595,7 +587,7 @@ async def generator_and_about(app, m):
         except (PhoneCodeExpiredError, PhoneCodeInvalidError):
             return await code_ask.reply("رمز الهاتف غير صالح!", quote=True)
         await c.start(bot_token=phone)
-        rep = await m.reply("**⏳ يـعـالـج ..**", quote=True)
+        rep = await m.reply("**کەمێك چاوەڕێ بکە ⏳**", quote=True)
         get = await c.get_me()
         text = '**✅┋ بە سەرکەوتوویی ئەنجام درا\n**'
         text += f'**👤┋ ناوت : {get.first_name}\n**'
