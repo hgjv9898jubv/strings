@@ -381,7 +381,7 @@ async def generator_and_about(app, m):
         text += f'**🔒┋ کۆدەکە لە 𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 دانرا**'
         string_session = await c.export_session_string()
         await rep.delete()
-        await c.send_message(m.chat.id, f'**بە سەرکەوتوویی کۆدی پـایـرۆگـرام دەرهێنرا** `{v}` **ئەمە کۆدەکەیە**\n\n`{string_session}`')
+        await c.reply(m.chat.id, f'**بە سەرکەوتوویی کۆدی پـایـرۆگـرام دەرهێنرا** `{v}` **ئەمە کۆدەکەیە**\n\n`{string_session}`')
         await c.disconnect()
         await app.send_message(
             m.chat.id,
@@ -433,9 +433,9 @@ async def generator_and_about(app, m):
         text += f'**🆔┋ ئایدیت :** `{get.id}`\n'
         text += f'**📞┋ ژمارەی مۆبایل :** `{phone}`\n'
         text += f'**🔒┋ کۆدەکە لە 𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 دانرا**'
-        string_session = c.session.save()
+        string_session = c.session()
         await rep.delete()
-        await c.send_message(m.chat.id, f'**بە سەرکەوتوویی کۆدی تـێـلـێـثـۆن دەرهێنرا** `{v2}` **ئەمە کۆدەکەیە**\n\n`{string_session}`')
+        await c.reply(m.chat.id, f'**بە سەرکەوتوویی کۆدی تـێـلـێـثـۆن دەرهێنرا** `{v2}` **ئەمە کۆدەکەیە**\n\n`{string_session}`')
         await c.disconnect()
 
         await app.send_message(
