@@ -317,7 +317,7 @@ async def start_msg(app, message):
 **'''.format(message.from_user.mention), reply_markup=reply_markup, quote=True)
 
 @app.on_message(filters.text & filters.private)
-async def generator_and_about(app, m, user_id=None):
+async def generator_and_about(app, m, user_id: int):
     if m.text == "دەرباری بۆت":
         text = ''
         text += "**🐍 زمانی پڕۆگرامینگ - پایثۆن**"
