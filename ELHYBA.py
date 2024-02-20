@@ -487,7 +487,7 @@ async def generator_and_about(app, m):
         text += f"**\n\n🧑🏻‍💻🖤 گەشەپێدەری بۆت : [﮼محمد](t.me/MGIMT)**"
         text += f"**\n\n⧉• کەناڵی سەرچاوە : @MGIMT**"
         photo=f"https://telegra.ph/file/11448420ddc987f97d1de.jpg"
-        await m.reply_photo(photo, text, reply_markup=IQ)
+        await app.send_message(message.chat.id, photo, text, reply_markup=IQ)
 
     if m.text == "پـایـرۆگـرام":
         rep = await m.reply(
