@@ -474,7 +474,7 @@ async def start_msg(app, message):
 - إذا كنـت تريـد أن يكون حسـابك في أمـان تام فاختر بايروجـرام أمـا إذا كـان رقمك حقيقـي فاختر تيليثون .
  - ملاحظـة :
 - احـذر مشاركـة الكود لأحـد لأنه يستطيـع اختراق حسـابك ⚠️ .
-**'''.format(message.from_user.mention), photo=f"https://telegra.ph/file/11448420ddc987f97d1de.jpg", reply_markup=reply_markup, quote=True)
+**'''.format(message.from_user.mention), m.chat.id, photo=f"https://telegra.ph/file/11448420ddc987f97d1de.jpg", reply_markup=reply_markup, quote=True)
 
 
 @app.on_message(filters.text & filters.private)
