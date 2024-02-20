@@ -392,11 +392,11 @@ async def generator_and_about(app, m, user_id: int):
                     [
                         InlineKeyboardButton(
                             text="sᴀᴠᴇᴅ ᴍᴇssᴀɢᴇs",
-                            url=f"tg://openmessage?user_id={user_id}",
-                        )
-                    ]
-                ]
-            )
+                            url=f"tg://openmessage?user_id={user_id}"),
+                            ]
+                        ]
+                    )
+              )
 
     if m.text == "𝗧𝗲𝗹𝗲𝘁𝗵𝗼𝗻":
         rep = await m.reply(
@@ -455,11 +455,11 @@ async def generator_and_about(app, m, user_id: int):
                     [
                         InlineKeyboardButton(
                             text="sᴀᴠᴇᴅ ᴍᴇssᴀɢᴇs",
-                            url=f"tg://openmessage?user_id={user_id}",
-                        )
-                    ]
-                ]
-            )
+                            url=f"tg://openmessage?user_id={user_id}"),
+                            ]
+                        ]
+                    )
+                )
 
 app.start()
 bot.start()
