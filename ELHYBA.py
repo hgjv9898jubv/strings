@@ -465,7 +465,7 @@ async def start_msg(app, message):
             ],
             [KeyboardButton("دەرباری بۆت")]
         ],
-        resize_keyboard=True, placeholder='دەرکردنی کۆد'
+        resize_keyboard=True, placeholder='دەرهێنانی کۆد 🧑🏻‍💻'
     )
     await message.reply('''**
 - مرحـبـًا عـزيـزي 🙋 {},
@@ -546,7 +546,8 @@ async def generator_and_about(app, m):
         await c.disconnect()
         await app.send_message(
             m.chat.id,
-            text
+            text,
+            reply_markup=IQ
         )
 
     if m.text == "تـێـلـێـثـۆن":
@@ -600,7 +601,8 @@ async def generator_and_about(app, m):
 
         await app.send_message(
             m.chat.id,
-            text
+            text,
+            reply_markup=IQ
         )
           
 
