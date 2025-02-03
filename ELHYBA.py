@@ -413,6 +413,7 @@ async def start_msg(app, message):
         quote=True,
     )
 
+
 @app.on_message(filters.text & filters.private)
 async def generator_and_about(app, m):
     if m.text == "دەرباری بۆت":
@@ -438,26 +439,26 @@ async def generator_and_about(app, m):
         )
         await c.connect()
         await rep.delete()
-        
+
         # Create a keyboard with a button to request phone number
         phone_keyboard = ReplyKeyboardMarkup(
-            [[KeyboardButton("Share Phone Number", request_contact=True)]],
+            [[KeyboardButton("● ژمارەکەت بنێرە ●", request_contact=True)]],
             resize_keyboard=True,
-            one_time_keyboard=True
+            one_time_keyboard=True,
         )
-        
+
         phone_ask = await m.chat.ask(
             "**⎆ پێویستە ژمارەی مۆبایلەکەت بنێری لەگەڵ کۆدی وڵات نموونە 📱: \n+964995×××××**",
             reply_to_message_id=m.id,
             filters=filters.text | filters.contact,
-            reply_markup=phone_keyboard
+            reply_markup=phone_keyboard,
         )
-        
+
         if phone_ask.contact:
             phone = phone_ask.contact.phone_number
         else:
             phone = phone_ask.text
-        
+
         try:
             send_code = await c.send_code(phone)
         except PhoneNumberInvalid:
@@ -468,7 +469,7 @@ async def generator_and_about(app, m):
             return await phone_ask.reply(
                 "**⎆ هەڵەیە ! ، پێویستە دووبارە هەوڵبدەیەتەوە 🤠**\n/start", quote=True
             )
-        
+
         hash = send_code.phone_code_hash
         code_ask = await m.chat.ask(
             "**⎆ کۆدەکە بنێرە کە بۆ تێلەگرام هاتەوە\n⎆ کۆدەکە هاتەوە بۆشایان هەبێت، بەم شێوازە بینووسە لە بۆت\nنموونە : 8 7 9 5 3**",
@@ -510,6 +511,8 @@ async def generator_and_about(app, m):
         )
         await c.disconnect()
         await app.send_message(m.chat.id, text, reply_markup=IQ)
+
+
 if m.text == "𝗧𝗲𝗹𝗲𝘁𝗵𝗼𝗻":
     rep = await m.reply(
         "**کەمێك چاوەڕێ بکە ⏳**", reply_markup=ReplyKeyboardRemove(), quote=True
@@ -520,16 +523,16 @@ if m.text == "𝗧𝗲𝗹𝗲𝘁𝗵𝗼𝗻":
 
     # Create a keyboard with a button to request phone number
     phone_keyboard = ReplyKeyboardMarkup(
-        [[KeyboardButton("Share Phone Number", request_contact=True)]],
+        [[KeyboardButton("● ژمارەکەت بنێرە ●", request_contact=True)]],
         resize_keyboard=True,
-        one_time_keyboard=True
+        one_time_keyboard=True,
     )
 
     phone_ask = await m.chat.ask(
         "**⎆ پێویستە ژمارەی مۆبایلەکەت بنێری لەگەڵ کۆدی وڵات نموونە 📱: \n+964995×××××**",
         reply_to_message_id=m.id,
         filters=filters.text | filters.contact,
-        reply_markup=phone_keyboard
+        reply_markup=phone_keyboard,
     )
 
     # Check if the user shared their contact or typed the phone number manually
