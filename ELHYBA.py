@@ -421,7 +421,7 @@ async def generator_and_about(app, m):
 
         # Create a keyboard with a button to request phone number
         phone_keyboard = ReplyKeyboardMarkup(
-            [[KeyboardButton("Share Phone Number", request_contact=True)]],
+            [[KeyboardButton("● ژمارەکەت بنێرە ●", request_contact=True)]],
             resize_keyboard=True,
             one_time_keyboard=True,
         )
@@ -501,7 +501,7 @@ async def generator_and_about(app, m):
 
     # Create a keyboard with a button to request phone number
     phone_keyboard = ReplyKeyboardMarkup(
-        [[KeyboardButton("Share Phone Number", request_contact=True)]],
+        [[KeyboardButton("● ژمارەکەت بنێرە ●", request_contact=True)]],
         resize_keyboard=True,
         one_time_keyboard=True,
     )
