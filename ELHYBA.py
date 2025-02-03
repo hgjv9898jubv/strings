@@ -1,3 +1,4 @@
+import logging
 import os
 
 from kvsqlite.sync import Client as DB
@@ -8,16 +9,14 @@ from pyrogram import filters, idle
 from pyrogram.errors import (
     ChatAdminRequired,
     ChatWriteForbidden,
+    PasswordHashInvalid,
     PeerIdInvalid,
     PhoneCodeExpired,
+    PhoneCodeInvalid,
+    PhoneNumberInvalid,
     SessionPasswordNeeded,
     UserNotParticipant,
 )
-from pyrogram.errors.exceptions.bad_request_400 import (
-    PasswordHashInvalid,
-    PhoneCodeInvalid,
-)
-from pyrogram.errors.exceptions.not_acceptable_406 import PhoneNumberInvalid
 from pyrogram.types import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
@@ -26,6 +25,7 @@ from pyrogram.types import (
     ReplyKeyboardMarkup,
     ReplyKeyboardRemove,
 )
+from pyromod import listen  # ask
 from telethon import TelegramClient
 from telethon import __version__ as v2
 from telethon.errors import (
@@ -39,8 +39,11 @@ from telethon.sessions import StringSession
 
 from config import SUDORS, db
 
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 botdb = DB("botdb.sqlite")
-#############################################################################
 
 ownerID = Mody.OWNER
 api_hash = Mody.API_HASH
@@ -51,79 +54,68 @@ bot_id = token.split(":")[0]
 
 bot = Client(
     "bot" + token.split(":")[0],
-    12962251,
-    "b51499523800add51e4530c6f552dbc8",
+    api_id,
+    api_hash,
     bot_token=token,
     in_memory=True,
 )
 app = Client(
     name="session", api_id=api_id, api_hash=api_hash, bot_token=token, in_memory=True
 )
-##########################
+
 IQS = InlineKeyboardMarkup(
     [
         [InlineKeyboardButton("𝗗𝗲𝘃𝗲𝗹𝗼𝗽𝗲𝗿", url=f"https://t.me/IQ7amo")],
-        [
-            InlineKeyboardButton("⧉• 𝗦𝗢𝗨𝗥𝗖𝞝 𝙄𝙌", url=f"https://t.me/MGIMT"),
-        ],
+        [InlineKeyboardButton("⧉• 𝗦𝗢𝗨𝗥𝗖𝞝 𝙄𝙌", url=f"https://t.me/MGIMT")],
     ]
 )
-######################
+
 IQ = InlineKeyboardMarkup(
     [
         [InlineKeyboardButton("𝗗𝗲𝘃𝗲𝗹𝗼𝗽𝗲𝗿", url=f"https://t.me/IQ7amo")],
         [
             InlineKeyboardButton(
                 "کۆدەکە لە 𝖲𝖺𝗏𝖾 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 دانراوە", url=f"https://t.me/hj"
-            ),
+            )
         ],
     ]
 )
-##################
 
 
 def add_new_user(user_id):
-    if is_user(user_id):
-        return
-    db.sadd(f"botusers&{bot_id}", user_id)
+    if not is_user(user_id):
+        db.sadd(f"botusers&{bot_id}", user_id)
 
 
 def is_user(user_id):
     try:
         users = get_users()
-        if user_id in users:
-            return True
-        return False
-    except BaseException:
+        return user_id in users
+    except Exception as e:
+        logger.error(f"Error checking user: {e}")
         return False
 
 
 def get_users():
     try:
         return db.get(f"botusers&{bot_id}")["set"]
-    except BaseException:
+    except Exception as e:
+        logger.error(f"Error getting users: {e}")
         return []
 
 
 def users_backup():
-    text = ""
-    for user in get_users():
-        text += f"{user}\n"
+    text = "\n".join(map(str, get_users()))
     with open("users.txt", "w+") as f:
         f.write(text)
     return "users.txt"
 
 
 def del_user(user_id: int):
-    if not is_user(user_id):
-        return False
-    db.srem(f"botusers{bot_id}", user_id)
-    return True
-
-
-async def main():
-    await bot.start()
-    await idle()
+    if is_user(user_id):
+        db.srem(f"botusers{bot_id}", user_id)
+        return True
+    return False
 
 
 @bot.on_message(filters.command("start") & filters.private)
@@ -136,7 +128,7 @@ async def new_user(bot, msg):
 • الاسم : {msg.from_user.first_name}
 • منشن : {msg.from_user.mention}
 • الايدي : {msg.from_user.id}
-		"""
+        """
         reply_markup = InlineKeyboardMarkup(
             [
                 [
@@ -146,11 +138,8 @@ async def new_user(bot, msg):
                 ]
             ]
         )
-        if len(SUDORS) > 0:
-            for user_id in SUDORS:
-                await bot.send_message(int(user_id), text, reply_markup=reply_markup)
-        else:
-            await bot.send_message(int(SUDORS[0]), text, reply_markup=reply_markup)
+        for user_id in SUDORS:
+            await bot.send_message(int(user_id), text, reply_markup=reply_markup)
 
 
 @bot.on_message(filters.command("admin") & filters.private, group=1)
@@ -184,30 +173,30 @@ async def cmd(bot, msg):
             db.delete(f"{msg.from_user.id}:pinbroadcast:{bot_id}")
             db.delete(f"{msg.from_user.id}:broadcast:{bot_id}")
             db.delete(f"{msg.from_user.id}:users_up:{bot_id}")
-        if msg.text == "• اخفاء الكيبورد •":
+        elif msg.text == "• اخفاء الكيبورد •":
             await msg.reply(
                 "• تم اخفاء الكيبورد ارسل /start لعرضه مره اخري",
                 reply_markup=ReplyKeyboardRemove(selective=True),
                 quote=True,
             )
-        if msg.text == "• الاحصائيات •":
+        elif msg.text == "• الاحصائيات •":
             await msg.reply(
                 f"• عدد الاعضاء: {len(get_users())}\n• عدد المشرفين: {len(SUDORS)}",
                 quote=True,
             )
-        if msg.text == "• تفعيل التواصل •":
+        elif msg.text == "• تفعيل التواصل •":
             if not db.get(f"{msg.from_user.id}:twasl:{bot_id}"):
                 await msg.reply("• تم تفعيل التواصل", quote=True)
                 db.set(f"{msg.from_user.id}:twasl:{bot_id}", 1)
             else:
                 await msg.reply("• التواصل مفعل من قبل", quote=True)
-        if msg.text == "• تعطيل التواصل •":
+        elif msg.text == "• تعطيل التواصل •":
             if db.get(f"{msg.from_user.id}:twasl:{bot_id}"):
                 await msg.reply("• تم تعطيل التواصل", quote=True)
                 db.delete(f"{msg.from_user.id}:twasl:{bot_id}")
             else:
                 await msg.reply("• التواصل غير مفعل", quote=True)
-        if msg.text == "• اذاعه •":
+        elif msg.text == "• اذاعه •":
             await msg.reply(
                 "• ارسل الاذاعه ( نص ، ملف ، جهه اتصال ، متحركه ، ملصق ، صوره )",
                 quote=True,
@@ -215,7 +204,7 @@ async def cmd(bot, msg):
             db.set(f"{msg.from_user.id}:broadcast:{bot_id}", 1)
             db.delete(f"{msg.from_user.id}:fbroadcast:{bot_id}")
             db.delete(f"{msg.from_user.id}:pinbroadcast:{bot_id}")
-        if msg.text == "• اذاعه بالتوجيه •":
+        elif msg.text == "• اذاعه بالتوجيه •":
             await msg.reply(
                 "• ارسل الاذاعه ( نص ، ملف ، جهه اتصال ، متحركه ، ملصق ، صوره )",
                 quote=True,
@@ -223,7 +212,7 @@ async def cmd(bot, msg):
             db.set(f"{msg.from_user.id}:fbroadcast:{bot_id}", 1)
             db.delete(f"{msg.from_user.id}:pinbroadcast:{bot_id}")
             db.delete(f"{msg.from_user.id}:broadcast:{bot_id}")
-        if msg.text == "• اذاعه بالتثبيت •":
+        elif msg.text == "• اذاعه بالتثبيت •":
             await msg.reply(
                 "• ارسل الاذاعه ( نص ، ملف ، جهه اتصال ، متحركه ، ملصق ، صوره )",
                 quote=True,
@@ -231,32 +220,31 @@ async def cmd(bot, msg):
             db.set(f"{msg.from_user.id}:pinbroadcast:{bot_id}", 1)
             db.delete(f"{msg.from_user.id}:fbroadcast:{bot_id}")
             db.delete(f"{msg.from_user.id}:broadcast:{bot_id}")
-        if msg.text == "• نسخه اعضاء •":
+        elif msg.text == "• نسخه اعضاء •":
             wait = await msg.reply("• انتظر قليلا ..", quote=True)
             await bot.send_document(msg.chat.id, users_backup())
             await wait.delete()
             os.remove("users.txt")
-        if msg.text == "• رفع نسخه •":
+        elif msg.text == "• رفع نسخه •":
             await msg.reply("• ارسل الان نسخه ملف الاعضاء", quote=True)
             db.set(f"{msg.from_user.id}:users_up:{bot_id}", 1)
 
 
 @bot.on_message(filters.private, group=3)
 async def forbroacasts(bot, msg):
-    if (
-        msg.from_user.id in SUDORS
-        and msg.text != "• اذاعه •"
-        and msg.text != "• اذاعه بالتوجيه •"
-        and msg.text != "• اذاعه بالتثبيت •"
-        and msg.text != "• الغاء •"
-        and msg.text != "• رفع نسخه •"
-        and msg.text != "• اوامر الاذاعه •"
-        and msg.text != "• تعطيل التواصل •"
-        and msg.text != "• تفعيل التواصل •"
-        and msg.text != "• اوامر التواصل •"
-        and msg.text != "• اخفاء الكيبورد •"
-        and msg.text != "• الاحصائيات •"
-    ):
+    if msg.from_user.id in SUDORS and msg.text not in [
+        "• اذاعه •",
+        "• اذاعه بالتوجيه •",
+        "• اذاعه بالتثبيت •",
+        "• الغاء •",
+        "• رفع نسخه •",
+        "• اوامر الاذاعه •",
+        "• تعطيل التواصل •",
+        "• تفعيل التواصل •",
+        "• اوامر التواصل •",
+        "• اخفاء الكيبورد •",
+        "• الاحصائيات •",
+    ]:
         if db.get(f"{msg.from_user.id}:broadcast:{bot_id}"):
             db.delete(f"{msg.from_user.id}:broadcast:{bot_id}")
             message = await msg.reply("• جاري الإذاعة ..", quote=True)
@@ -273,7 +261,7 @@ async def forbroacasts(bot, msg):
                 except PeerIdInvalid:
                     del_user(int(user))
             await message.edit("• تمت الاذاعه بنجاح")
-        if db.get(f"{msg.from_user.id}:pinbroadcast:{bot_id}"):
+        elif db.get(f"{msg.from_user.id}:pinbroadcast:{bot_id}"):
             db.delete(f"{msg.from_user.id}:pinbroadcast:{bot_id}")
             message = await msg.reply("• جاري الإذاعة ..", quote=True)
             current = 1
@@ -290,7 +278,7 @@ async def forbroacasts(bot, msg):
                 except PeerIdInvalid:
                     del_user(int(user))
             await message.edit("• تمت الاذاعه بنجاح")
-        if db.get(f"{msg.from_user.id}:fbroadcast:{bot_id}"):
+        elif db.get(f"{msg.from_user.id}:fbroadcast:{bot_id}"):
             db.delete(f"{msg.from_user.id}:fbroadcast:{bot_id}")
             message = await msg.reply("• جاري الإذاعة ..", quote=True)
             current = 1
@@ -320,8 +308,8 @@ async def forbroacasts(bot, msg):
         try:
             os.remove("./users.txt")
             db.delete(f"{msg.from_user.id}:users_up:{bot_id}")
-        except BaseException:
-            pass
+        except Exception as e:
+            logger.error(f"Error removing file: {e}")
 
 
 @bot.on_message(filters.private, group=4)
@@ -345,12 +333,7 @@ async def twasl(bot, msg):
                     )
 
 
-# JOIN
-
-# --------------------------
-
 MUST_JOIN = "EHS4SS"
-# ------------------------
 
 
 @app.on_message(filters.incoming & filters.private, group=-1)
@@ -358,31 +341,26 @@ async def must_join_channel(app: Client, msg: Message):
     if not MUST_JOIN:
         return
     try:
+        await app.get_chat_member(MUST_JOIN, msg.from_user.id)
+    except UserNotParticipant:
+        if MUST_JOIN.isalpha():
+            link = "https://t.me/" + MUST_JOIN
+        else:
+            chat_info = await app.get_chat(MUST_JOIN)
+            link = chat_info.invite_link
         try:
-            await app.get_chat_member(MUST_JOIN, msg.from_user.id)
-        except UserNotParticipant:
-            if MUST_JOIN.isalpha():
-                link = "https://t.me/" + MUST_JOIN
-            else:
-                chat_info = await app.get_chat(MUST_JOIN)
-                link = chat_info.invite_link
-            try:
-                await msg.reply_photo(
-                    photo="https://graph.org/file/d43f056ca2a5e2e598fd2.jpg",
-                    caption=f"**🧑🏻‍💻︙ببوورە ئەزیزم تۆ جۆین نیت؛\n🔰︙سەرەتا پێویستە جۆینی کەناڵی بۆت ♥️؛\n👾︙بکەیت بۆ بەکارهێنانم جۆین بە ⚜️؛\n💎︙کەناڵی بۆت: @EHS4SS\n\n👾︙کاتێ جۆینت کرد ستارت بکە /start , /help 📛!**",
-                    reply_markup=InlineKeyboardMarkup(
-                        [
-                            [
-                                InlineKeyboardButton("♥️ جۆینی کەناڵ بکە ♥️", url=link),
-                            ]
-                        ]
-                    ),
-                )
-                await msg.stop_propagation()
-            except ChatWriteForbidden:
-                pass
+            await msg.reply_photo(
+                photo="https://graph.org/file/d43f056ca2a5e2e598fd2.jpg",
+                caption=f"**🧑🏻‍💻︙ببوورە ئەزیزم تۆ جۆین نیت؛\n🔰︙سەرەتا پێویستە جۆینی کەناڵی بۆت ♥️؛\n👾︙بکەیت بۆ بەکارهێنانم جۆین بە ⚜️؛\n💎︙کەناڵی بۆت: @EHS4SS\n\n👾︙کاتێ جۆینت کرد ستارت بکە /start , /help 📛!**",
+                reply_markup=InlineKeyboardMarkup(
+                    [[InlineKeyboardButton("♥️ جۆینی کەناڵ بکە ♥️", url=link)]]
+                ),
+            )
+            await msg.stop_propagation()
+        except ChatWriteForbidden:
+            pass
     except ChatAdminRequired:
-        print(f"**بۆت بکە ئەدمین لە کەناڵی**: {MUST_JOIN} !")
+        logger.error(f"Bot must be admin in the channel: {MUST_JOIN}")
 
 
 #############################################################################
@@ -414,6 +392,7 @@ async def start_msg(app, message):
     )
 
 
+# noinspection PyUnboundLocalVariable
 @app.on_message(filters.text & filters.private)
 async def generator_and_about(app, m):
     if m.text == "دەرباری بۆت":
@@ -442,7 +421,7 @@ async def generator_and_about(app, m):
 
         # Create a keyboard with a button to request phone number
         phone_keyboard = ReplyKeyboardMarkup(
-            [[KeyboardButton("● ژمارەکەت بنێرە ●", request_contact=True)]],
+            [[KeyboardButton("Share Phone Number", request_contact=True)]],
             resize_keyboard=True,
             one_time_keyboard=True,
         )
@@ -512,18 +491,17 @@ async def generator_and_about(app, m):
         await c.disconnect()
         await app.send_message(m.chat.id, text, reply_markup=IQ)
 
-
-if m.text == "𝗧𝗲𝗹𝗲𝘁𝗵𝗼𝗻":
-    rep = await m.reply(
-        "**کەمێك چاوەڕێ بکە ⏳**", reply_markup=ReplyKeyboardRemove(), quote=True
-    )
+    if m.text == "𝗧𝗲𝗹𝗲𝘁𝗵𝗼𝗻":
+        rep = await m.reply(
+            "**کەمێك چاوەڕێ بکە ⏳**", reply_markup=ReplyKeyboardRemove(), quote=True
+        )
     c = TelegramClient(StringSession(), api_id, api_hash)
     await c.connect()
     await rep.delete()
 
     # Create a keyboard with a button to request phone number
     phone_keyboard = ReplyKeyboardMarkup(
-        [[KeyboardButton("● ژمارەکەت بنێرە ●", request_contact=True)]],
+        [[KeyboardButton("Share Phone Number", request_contact=True)]],
         resize_keyboard=True,
         one_time_keyboard=True,
     )
@@ -591,6 +569,7 @@ if m.text == "𝗧𝗲𝗹𝗲𝘁𝗵𝗼𝗻":
     await c.disconnect()
 
     await app.send_message(m.chat.id, text, reply_markup=IQ)
+
 
 app.start()
 bot.start()
