@@ -571,14 +571,7 @@ async def generator_and_about(app, m):
     await app.send_message(m.chat.id, text, reply_markup=IQ)
 
 
-
-async def main():
-    await bot.start()
-    await app.start()
-    print("بۆت چالاککرا لەلایەن : @IQ7amo")
-    await idle()
-    await bot.stop()
-    await app.stop()
-
-if __name__ == "__main__":
-    asyncio.run(main())
+app.start()
+bot.start()
+print("بۆت چالاککرا لەلایەن : @IQ7amo")
+idle()
