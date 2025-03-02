@@ -2,7 +2,7 @@ import os
 
 
 class Mody(object):
-    ELHYBA = os.environ.get("ELHYBA", "6958725315:AAHpNNNWACFaN6duuUji4NpPv-OJMPJVeno")
+    ELHYBA = os.environ.get("ELHYBA", "6958725315:AAFhEKDWAs2y4sUSESSS7xzisJzsCFg5hE8")
 
     API_ID = int(os.environ.get("API_ID", 12962251))
 
